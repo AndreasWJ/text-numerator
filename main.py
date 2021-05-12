@@ -1,3 +1,9 @@
+bl_info = {
+    "name": "Text Numerator",
+    "blender": (2, 80, 0),
+    "category": "Render",
+}
+
 import bpy
 
 
@@ -15,6 +21,9 @@ class RenderText(bpy.types.Operator):
     
     def execute(self, context):
         selected = context.collection
+        if selected is None:
+            return {"FINISHED"}
+
         print("Collection selected: " + selected.name)
         
         # Text can be retrieved and written to object.data.body
@@ -50,8 +59,7 @@ class RenderText(bpy.types.Operator):
         for text_object in collection.all_objects:
                 text_object.data.body = text
     
-    # If set = 1, display objects, if set = 0, hide objects
-    # TODO: Rewrite ignore_collections
+    # If set = True, hide objects, if set = False, display objects
     def set_other_objects(self, set, ignore_collections):
         # Flattens list of collections into list of objects
         ignore_objects = [object.name for collection in ignore_collections for object in collection.all_objects]
@@ -79,12 +87,12 @@ class RenderText(bpy.types.Operator):
         bpy.ops.render.render(use_viewport = True, write_still=True)
 
 class TextNumerate(bpy.types.Panel):
-    """Creates a Panel in the Object properties window"""
-    bl_label = "Text Numerate Panel"
+    """Creates a Panel in the output properties window"""
+    bl_label = "Render Numerated Text"
     bl_idname = "OBJECT_PT_hello"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
-    bl_context = "object"
+    bl_context = "output"
 
     def draw(self, context):
         layout = self.layout
@@ -93,6 +101,12 @@ class TextNumerate(bpy.types.Panel):
 
         row = layout.row()
         row.label(text="Text Numerator", icon='FONT_DATA')
+        
+        row = layout.row()
+        row.label(text="Select a collection representing a number")
+        
+        row = layout.row()
+        row.label(text="The collection can contain one or multiple text objects")
 
         row = layout.row()
         row.label(text="Active collection is: " + collection.name)
