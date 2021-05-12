@@ -1,6 +1,8 @@
 ## About
 A simple Blender addon written to numerate text objects from 0 to 9.
 
+![Layer digit render images to form a number](images/NumeratedLayerExample.png)
+
 ## Usecases
 Primarily intended to serve as an alternative to render 1000 images to represent an interval of numbers from 0 to 999. For example, you want a third party app to display 3D numbers in a certain range. You can by numerating numbers individually avoid hundreds of renders, and instead assemble numbers in the third party app. A three digit output looks like:
 ```
